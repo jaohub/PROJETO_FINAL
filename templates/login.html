@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container" style="max-width: 400px;">
+        <h1>Organizador de Tarefas</h1>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="message-item">
+                            <span>{{ message }}</span>
+                            <strong class="close-flash" onclick="this.parentElement.style.display='none';">&times;</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="auth-forms">
+            <div class="form-box">
+                <h2>Acessar Conta</h2>
+                <form action="/login" method="POST">
+                    <label for="login_email">E-mail:</label>
+                    <input type="email" id="login_email" name="email" placeholder="seuemail@link.com" required>
+
+                    <label for="login_senha">Senha:</label>
+                    <input type="password" id="login_senha" name="senha" placeholder="Digite sua senha" required>
+
+                    <button type="submit">Entrar</button>
+                </form>
+
+                <div class="auth-links">
+                    <a href="/tela-cadastro" class="link-action">Criar nova conta</a>
+                    <a href="/recuperar" class="link-action label-forgot">Esqueci minha senha</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

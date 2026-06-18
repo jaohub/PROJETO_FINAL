@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Tarefa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container" style="max-width: 500px;">
+        <h2>Editar Tarefa</h2>
+        <form action="/tarefa/editar/{{ tarefa['id'] }}" method="POST" style="text-align: left;">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" value="{{ tarefa['titulo'] }}" required>
+
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" rows="3" style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:15px; font-family:inherit;">{{ tarefa['descricao'] }}</textarea>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <label for="status">Status:</label>
+                    <select id="status" name="status">
+                        <option value="A Fazer" {% if tarefa['status'] == 'A Fazer' %}selected{% endif %}>A Fazer</option>
+                        <option value="Em Andamento" {% if tarefa['status'] == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                        <option value="Concluído" {% if tarefa['status'] == 'Concluído' %}selected{% endif %}>Concluído</option>
+                    </select>
+                </div>
+                
+                <div style="flex: 1;">
+                    <label for="prioridade">Prioridade:</label>
+                    <select id="prioridade" name="prioridade">
+                        <option value="Baixa" {% if tarefa['prioridade'] == 'Baixa' %}selected{% endif %}>Baixa</option>
+                        <option value="Média" {% if tarefa['prioridade'] == 'Média' %}selected{% endif %}>Média</option>
+                        <option value="Alta" {% if tarefa['prioridade'] == 'Alta' %}selected{% endif %}>Alta</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="data_entrega">Prazo de Entrega:</label>
+            <input type="date" id="data_entrega" name="data_entrega" value="{{ tarefa['data_entrega'] }}">
+
+            <button type="submit">Salvar Alterações</button>
+            <a href="/" style="display:block; text-align:center; margin-top:15px; color:#666; text-decoration:none;">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

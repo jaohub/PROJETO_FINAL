@@ -1,0 +1,303 @@
+/* ==========================================
+   CONFIGURAÇÕES GERAIS
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ==========================================
+   MENSAGENS FLASH (NOTIFICAÇÕES INTERATIVAS)
+   ========================================== */
+.flash-messages {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.message-item {
+    background-color: #e6f4ea;
+    color: #137333;
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #ceead6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.close-flash {
+    cursor: pointer;
+    font-size: 1.3rem;
+    line-height: 1;
+    padding-left: 10px;
+    transition: opacity 0.2s;
+}
+.close-flash:hover {
+    opacity: 0.7;
+}
+
+/* ==========================================
+   TELA DE AUTENTICAÇÃO (SISTEMA ISOLADO)
+   ========================================== */
+.auth-container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.auth-forms {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-box {
+    text-align: left;
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Links Úteis sob os Formulários */
+.auth-links {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+}
+
+.link-action, .link-back {
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-action:hover, .link-back:hover {
+    text-decoration: underline;
+}
+
+.label-forgot {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* ==========================================
+   BOTÕES
+   ========================================== */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #28a745;
+}
+
+.btn-secondary:hover {
+    background-color: #218838;
+}
+
+/* ==========================================
+   DASHBOARD / FORMULÁRIO GRID
+   ========================================== */
+.dashboard-header {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-logout {
+    color: #ff3333;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.task-form-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.row-inputs {
+    display: flex;
+    gap: 15px;
+}
+
+.row-inputs > div {
+    flex: 1;
+}
+
+/* ==========================================
+   QUADRO KANBAN (COLUNAS E CARDS)
+   ========================================== */
+.kanban-board {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.kanban-column {
+    flex: 1;
+    background: #eef1f5;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 450px;
+}
+
+.kanban-column h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #444;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 8px;
+}
+
+.task-card {
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 5px solid #007bff;
+}
+
+.task-card.completed {
+    border-left-color: #28a745 !important;
+    opacity: 0.75;
+}
+
+/* Seletores lógicos para tratamento de prioridade (Ajuda o designer) */
+.task-card[data-priority="Alta"] { border-left-color: #dc3545; }
+.task-card[data-priority="Média"] { border-left-color: #ffc107; }
+.task-card[data-priority="Baixa"] { border-left-color: #17a2b8; }
+
+.task-card h4 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.task-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    white-space: pre-line;
+}
+
+.task-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    background-color: #eee;
+    color: #666;
+}
+
+.task-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
+}
+
+.btn-move {
+    font-size: 0.85rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-edit, .btn-delete { text-decoration: none; }
+
+/* ==========================================
+   RESPONSIVIDADE (MOBILE-FIRST ADAPTATIVO)
+   ========================================== */
+@media (max-width: 768px) {
+    .kanban-board, .row-inputs {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

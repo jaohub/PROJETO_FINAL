@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Nova Tarefa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container" style="max-width: 500px; text-align: left;">
+        <h2 style="margin-bottom: 20px; text-align: center; color: #333;">📌 Criar Nova Atividade</h2>
+        
+        <form action="/tarefa/criar" method="POST">
+            <label for="titulo">Título da Tarefa:</label>
+            <input type="text" id="titulo" name="titulo" placeholder="O que precisa ser feito?" required>
+
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label for="prioridade">Prioridade:</label>
+                    <select id="prioridade" name="prioridade">
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média" selected>Média</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="data_entrega">Prazo limite:</label>
+                    <input type="date" id="data_entrega" name="data_entrega">
+                </div>
+            </div>
+
+            <label for="descricao">Descrição / Detalhes:</label>
+            <textarea id="descricao" name="descricao" rows="4" placeholder="Adicione observações importantes ou sub-tarefas..." style="width:100%; padding:10px; border-radius:4px; border:1px solid #ccc; margin-bottom:15px; font-family:inherit;"></textarea>
+
+            <button type="submit" class="btn-secondary">Adicionar Tarefa</button>
+            <a href="/" style="display:block; text-align:center; margin-top:15px; color:#666; text-decoration:none;">← Voltar ao Painel</a>
+        </form>
+    </div>
+</body>
+</html>
