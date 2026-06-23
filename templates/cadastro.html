@@ -1,49 +1,44 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Tarefas - Cadastrar</title>
+    <title>Organizador de Tarefas - Cadastrar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="auth-container" style="max-width: 400px;">
-        <h1>Organizador de Tarefas</h1>
+<body class="auth-wrapper">
+
+    <div class="auth-card">
+        <h2>Criar Conta</h2>
+        <p>Insira seus dados para começar a gerenciar suas tarefas.</p>
         
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="message-item">
-                            <span>{{ message }}</span>
-                            <strong class="close-flash" onclick="this.parentElement.style.display='none';">&times;</strong>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
             {% endif %}
         {% endwith %}
-
-        <div class="auth-forms">
-            <div class="form-box">
-                <h2>Criar Conta</h2>
-                <form action="/cadastro" method="POST">
-                    <label for="cad_nome">Nome Completo:</label>
-                    <input type="text" id="cad_nome" name="nome" placeholder="Ex: João Mateus" required>
-
-                    <label for="cad_email">E-mail:</label>
-                    <input type="email" id="cad_email" name="email" placeholder="exemplo@email.com" required>
-
-                    <label for="cad_senha">Senha:</label>
-                    <input type="password" id="cad_senha" name="senha" placeholder="No mínimo 6 caracteres" minlength="6" required>
-
-                    <button type="submit" class="btn-secondary">Cadastrar</button>
-                </form>
-
-                <div class="auth-links">
-                    <a href="/" class="link-back">← Voltar para o Login</a>
-                </div>
+        
+        <form action="{{ url_for('cadastro') }}" method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" name="nome" id="nome" placeholder="Seu nome" required autocomplete="off">
             </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" name="email" id="email" placeholder="seuemail@link.com" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha" placeholder="Crie uma senha segura" required>
+            </div>
+            <button type="submit" class="btn-auth-submit" style="background-color: #2ecc71;">Finalizar Cadastro</button>
+        </form>
+        
+        <div class="auth-footer">
+            <a href="{{ url_for('login') }}">Já tem uma conta? Entrar</a>
         </div>
     </div>
+
 </body>
 </html>

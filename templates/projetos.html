@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Módulos de Trabalho</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-logo">
+            <h1 style="color: #2c3e50; font-size: 22px;">⚡ Gerenciador de Atividades</h1>
+        </div>
+        <div class="header-user">
+            <a href="{{ url_for('logout') }}" class="btn-logout">Sair do Sistema</a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        {% if mostrar_criador %}
+            <div class="project-creation-box">
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">✨ Criar Novo Módulo</h3>
+                <form action="{{ url_for('lista_projetos') }}" method="POST" class="inline-form">
+                    <input type="text" name="nome_projeto" placeholder="Ex: Atividades de Casa, Faculdade, SENAI..." required autocomplete="off">
+                    <input type="text" name="descricao" placeholder="Descrição curta (opcional)" autocomplete="off">
+                    <button type="submit" class="btn-add">Criar Módulo</button>
+                </form>
+                
+                {% if projetos %}
+                    <a href="{{ url_for('lista_projetos') }}" style="display: inline-block; margin-top: 15px; color: #7f8c8d; text-decoration: none; font-size: 14px;">← Voltar para Meus Módulos</a>
+                {% endif %}
+            </div>
+        {% else %}
+            
+            <div class="welcome-section" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div>
+                    <h2>Olá, {{ session['usuario_nome'] }}!</h2>
+                    <p style="color: #7f8c8d; margin-top: 4px;">Selecione um módulo abaixo para gerenciar suas atividades:</p>
+                </div>
+                <a href="{{ url_for('lista_projetos', novo=1) }}" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    ➕ Adicionar Novo Módulo
+                </a>
+            </div>
+
+            <div class="projects-grid">
+                {% for projeto in projetos %}
+                    <div class="project-card">
+                        
+                        <a href="{{ url_for('dashboard_projeto', projeto_id=projeto[0]) }}" class="project-card-content">
+                            <h3>{{ projeto[1] }}</h3>
+                            <p>{{ projeto[2] if projeto[2] else 'Sem descrição informada para este módulo.' }}</p>
+                        </a>
+                        
+                        <div class="project-card-actions">
+                            <form action="{{ url_for('excluir_projeto', projeto_id=projeto[0]) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este módulo e todas as suas tarefas vinculadas?');" style="display: inline;">
+                                <button type="submit" class="btn-delete-link">Excluir Módulo</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

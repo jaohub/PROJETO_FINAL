@@ -6,41 +6,46 @@
     <title>Gerenciador de Tarefas - Recuperar Senha</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="auth-container" style="max-width: 400px;">
-        <h1>Recuperar Senha</h1>
-        <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Informe seu e-mail cadastrado e digite a nova senha do sistema.</p>
-        
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="message-item">
-                            <span>{{ message }}</span>
-                            <strong class="close-flash" onclick="this.parentElement.style.display='none';">&times;</strong>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+<body class="form-page-body">
 
-        <div class="auth-forms">
-            <div class="form-box">
-                <form action="/recuperar" method="POST">
+    <div class="form-container" style="max-width: 450px;">
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>🔒 Recuperar Senha</h2>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Informe seu e-mail cadastrado e digite a nova senha do sistema.</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages" style="margin-bottom: 15px;">
+                        {% for category, message in messages %}
+                            <div class="message-item alert-{{ category }}" style="padding: 10px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; {% if category == 'danger' %} background-color: #f8d7da; color: #721c24; {% else %} background-color: #d4edda; color: #155724; {% endif %}">
+                                <span>{{ message }}</span>
+                                <strong style="cursor:pointer;" onclick="this.parentElement.style.display='none';">&times;</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('recuperar_senha') }}" method="POST" class="task-form">
+                <div class="form-group">
                     <label for="rec_email">Seu E-mail Cadastrado:</label>
-                    <input type="email" id="rec_email" name="email" placeholder="seuemail@link.com" required>
+                    <input type="email" id="rec_email" name="email" placeholder="seuemail@link.com" required autocomplete="off">
+                </div>
 
+                <div class="form-group" style="margin-top: 15px;">
                     <label for="rec_senha">Nova Senha de Acesso:</label>
                     <input type="password" id="rec_senha" name="nova_senha" placeholder="No mínimo 6 caracteres" minlength="6" required>
-
-                    <button type="submit" style="background-color: #e0a800; color: #212529;">Redefinir Senha</button>
-                </form>
-
-                <div class="auth-links">
-                    <a href="/" class="link-back">← Voltar para o Login</a>
                 </div>
-            </div>
+
+                <div class="form-actions" style="margin-top: 25px;">
+                    <button type="submit" class="btn-submit-task" style="background-color: #e0a800; color: #212529;">Redefinir Senha</button>
+                    <a href="{{ url_for('login') }}" class="btn-cancel-task">← Voltar para o Login</a>
+                </div>
+            </form>
         </div>
     </div>
+
 </body>
 </html>

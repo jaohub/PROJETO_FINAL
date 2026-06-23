@@ -1,303 +1,696 @@
-/* ==========================================
-   CONFIGURAÇÕES GERAIS
-   ========================================== */
+/* ==========================================================================
+   1. CONFIGURAÇÕES GERAIS E RESETS
+   ========================================================================== */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #f4f6f9;
+    background-color: #f1f2f6;
+    color: #333333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-header {
+    background-color: #ffffff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   2. COMPONENTES COMPARTILHADOS (BOTÕES E INPUTS)
+   ========================================================================== */
+.btn-add {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background-color: #27ae60;
+}
+
+.btn-logout {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #e74c3c;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.project-creation-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+.project-creation-box h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.inline-form {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.inline-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    border: 1px solid #ced6e0;
+    border-radius: 6px;
+    outline: none;
+}
+
+.inline-form input:focus {
+    border-color: #3498db;
+}
+
+/* ==========================================================================
+   3. TELAS DE AUTENTICAÇÃO (LOGIN / CADASTRO)
+   ========================================================================== */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f6fa;
+    padding: 20px;
+}
+
+.auth-card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #e0e0e0;
+}
+
+.auth-card h2 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.auth-card p {
+    color: #7f8c8d;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.auth-form {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    gap: 18px;
+}
+
+.auth-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-form label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #57606f;
+}
+
+.auth-form input {
+    padding: 12px;
+    border: 1px solid #ced6e0;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+.auth-form input:focus {
+    border-color: #3498db;
+}
+
+.btn-auth-submit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+    transition: background 0.2s;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-auth-submit:hover {
+    background-color: #2980b9;
+}
+
+.auth-footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.auth-footer a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   4. SELEÇÃO DE MÓDULOS (GRID DE CARDS)
+   ========================================================================== */
+.welcome-section {
+    margin-bottom: 25px;
+}
+
+.welcome-section h2 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.project-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.project-card-content {
+    padding: 25px 30px;
+    text-decoration: none;
+    color: #333333;
+    display: block;
+}
+
+.project-card-content h3 {
+    margin-top: 5px;
+    margin-bottom: 12px;
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.project-card-content p {
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+.project-card-actions {
+    background: #fafafa;
+    padding: 15px 30px; 
+    border-top: 1px solid #eeeeee;
+    text-align: right;
+}
+
+.btn-delete-link {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.btn-delete-link:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   5. INTERFACE DO DASHBOARD KANBAN (ATUALIZADO)
+   ========================================================================== */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f1f2f6;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-brand h2 {
+    font-size: 20px;
+    color: #3498db;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.sidebar-menu hr {
+    border: 0;
+    height: 1px;
+    background: #34495e;
+    margin: 20px 0;
+}
+
+/* TIRA OS PONTOS DOS MODULOS NO SIDEBAR */
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: block;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-menu a:hover {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+.sidebar-menu li.active-project a {
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-header {
+    background-color: #ffffff;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.context-indicator {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-header h1 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-top: 2px;
+}
+
+/* BOTÃO DE NOVA TAREFA ESTILIZADO NO HEADER */
+.btn-floating {
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-floating:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-logout-secondary {
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 15px;
+    transition: color 0.2s;
+}
+
+.btn-logout-secondary:hover {
+    color: #e74c3c;
+}
+
+/* QUADRO KANBAN */
+.kanban-board {
+    display: flex;
+    gap: 20px;
+    padding: 30px 40px;
+    flex: 1;
+    align-items: flex-start;
+    overflow-x: auto;
+}
+
+.kanban-column {
+    flex: 1;
+    min-width: 290px;
+    background-color: #eef1f5;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.02);
+}
+
+.column-header {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    color: white;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.status-todo { background-color: #e67e22; }
+.status-doing { background-color: #2980b9; }
+.status-done { background-color: #27ae60; }
+
+.column-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 200px;
+}
+
+/* REFINAMENTO DOS CARDS DE TAREFA */
+.task-card {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border-left: 5px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-card.border-alta { border-left-color: #e74c3c; }
+.task-card.border-média { border-left-color: #f1c40f; }
+.task-card.border-baixa { border-left-color: #2ecc71; }
+
+.task-body h4 {
+    color: #2c3e50;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.task-desc {
+    color: #57606f;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.task-desc-done {
+    color: #a4b0be;
+    font-size: 13px;
+    line-height: 1.5;
+    text-decoration: line-through;
+}
+
+.task-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    background-color: #fafafa;
+    padding: 6px 8px;
+    border-radius: 4px;
+}
+
+.badge-priority {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+.priority-alta { background-color: #fce4e4; color: #cc2424; }
+.priority-média { background-color: #fef9e7; color: #b7950b; }
+.priority-baixa { background-color: #e8f8f5; color: #117a65; }
+
+.task-date {
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+/* BOTÕES DE AÇÃO INTERNA DOS CARDS */
+.task-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f1f2f6;
+    padding-top: 10px;
+    gap: 10px;
+}
+
+.btn-task-action {
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+    text-align: center;
+    flex: 1;
+}
+
+.move-forward {
+    background-color: #e8f4fd;
+    color: #2196f3;
+}
+.move-forward:hover {
+    background-color: #2196f3;
+    color: white;
+}
+
+.move-backward {
+    background-color: #f5f6fa;
+    color: #7f8c8d;
+}
+.move-backward:hover {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.btn-task-delete {
+    text-decoration: none;
+    font-size: 12px;
+    color: #a4b0be;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.btn-task-delete:hover {
+    background-color: #fce4e4;
+    color: #e74c3c;
+}
+
+/* ==========================================================================
+   6. FORMULÁRIO DE CADASTRO DE TAREFAS (NOVA TAREFA)
+   ========================================================================== */
+.form-page-body {
+    background-color: #f5f6fa;
+    display: flex;
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
 }
 
-/* ==========================================
-   MENSAGENS FLASH (NOTIFICAÇÕES INTERATIVAS)
-   ========================================== */
-.flash-messages {
+.form-container {
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 600px;
 }
 
-.message-item {
-    background-color: #e6f4ea;
-    color: #137333;
-    padding: 12px 20px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    border: 1px solid #ceead6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.form-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 35px;
+    border: 1px solid #e0e0e0;
 }
 
-.close-flash {
-    cursor: pointer;
-    font-size: 1.3rem;
-    line-height: 1;
-    padding-left: 10px;
-    transition: opacity 0.2s;
-}
-.close-flash:hover {
-    opacity: 0.7;
-}
-
-/* ==========================================
-   TELA DE AUTENTICAÇÃO (SISTEMA ISOLADO)
-   ========================================== */
-.auth-container {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 100%;
-    text-align: center;
-    margin-top: 40px;
-}
-
-h1 {
-    color: #333;
+.form-card-header {
+    border-bottom: 1px solid #f1f2f6;
+    padding-bottom: 15px;
     margin-bottom: 25px;
 }
 
-.auth-forms {
+.form-card-header h2 {
+    color: #2c3e50;
+    font-size: 22px;
+}
+
+.task-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.form-box {
-    text-align: left;
-    background: #fafafa;
-    padding: 20px;
-    border-radius: 6px;
-    border: 1px solid #eee;
-}
-
-h2 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: #555;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
-}
-
-/* Links Úteis sob os Formulários */
-.auth-links {
-    margin-top: 15px;
+.form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    text-align: center;
+    gap: 6px;
 }
 
-.link-action, .link-back {
-    font-size: 0.9rem;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.link-action:hover, .link-back:hover {
-    text-decoration: underline;
-}
-
-.label-forgot {
-    color: #666;
-    font-size: 0.85rem;
-}
-
-/* ==========================================
-   BOTÕES
-   ========================================== */
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: #28a745;
-}
-
-.btn-secondary:hover {
-    background-color: #218838;
-}
-
-/* ==========================================
-   DASHBOARD / FORMULÁRIO GRID
-   ========================================== */
-.dashboard-header {
-    width: 100%;
-    max-width: 1100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    margin-bottom: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.btn-logout {
-    color: #ff3333;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 100%;
-    max-width: 1100px;
-}
-
-.task-form-box {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.row-inputs {
+.form-row {
     display: flex;
     gap: 15px;
 }
 
-.row-inputs > div {
+.flex-1 {
     flex: 1;
 }
 
-/* ==========================================
-   QUADRO KANBAN (COLUNAS E CARDS)
-   ========================================== */
-.kanban-board {
-    display: flex;
-    gap: 20px;
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #57606f;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid #ced6e0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2f3542;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
     width: 100%;
 }
 
-.kanban-column {
-    flex: 1;
-    background: #eef1f5;
-    padding: 15px;
-    border-radius: 8px;
-    min-height: 450px;
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #3498db;
 }
 
-.kanban-column h3 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    color: #444;
-    border-bottom: 2px solid #cbd5e1;
-    padding-bottom: 8px;
-}
-
-.task-card {
-    background: white;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border-left: 5px solid #007bff;
-}
-
-.task-card.completed {
-    border-left-color: #28a745 !important;
-    opacity: 0.75;
-}
-
-/* Seletores lógicos para tratamento de prioridade (Ajuda o designer) */
-.task-card[data-priority="Alta"] { border-left-color: #dc3545; }
-.task-card[data-priority="Média"] { border-left-color: #ffc107; }
-.task-card[data-priority="Baixa"] { border-left-color: #17a2b8; }
-
-.task-card h4 {
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.task-card p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 12px;
-    white-space: pre-line;
-}
-
-.task-meta {
+.form-actions {
     display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.badge {
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    background-color: #eee;
-    color: #666;
-}
-
-.task-actions {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 8px;
+    gap: 15px;
+    margin-top: 10px;
 }
 
-.btn-move {
-    font-size: 0.85rem;
-    color: #007bff;
-    text-decoration: none;
+.btn-submit-task {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
     font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
 }
 
-.btn-edit, .btn-delete { text-decoration: none; }
+.btn-submit-task:hover {
+    background-color: #27ae60;
+}
 
-/* ==========================================
-   RESPONSIVIDADE (MOBILE-FIRST ADAPTATIVO)
-   ========================================== */
-@media (max-width: 768px) {
-    .kanban-board, .row-inputs {
-        flex-direction: column;
-        gap: 15px;
-    }
+.btn-cancel-task {
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-cancel-task:hover {
+    color: #2c3e50;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   7. MENSAGENS DE ALERTA (FLASH)
+   ========================================================================== */
+.alert {
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.alert-danger {
+    background-color: #fadbd8;
+    color: #78281f;
+    border: 1px solid #f5b7b1;
+}
+
+.alert-success {
+    background-color: #d4efdf;
+    color: #145a32;
+    border: 1px solid #abebc6;
 }

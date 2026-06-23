@@ -1,79 +1,118 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Painel de Tarefas</title>
+    <title>Painel Kanban — {{ projeto[1] }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="dashboard-header">
-        <h2>Olá, {{ session['usuario_nome'] }}!</h2>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <a href="/nova-tarefa" style="text-decoration: none; background-color: #28a745; color: white; font-size: 1.5rem; font-weight: bold; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Adicionar Nova Tarefa">＋</a>
-            <a href="/logout" class="btn-logout">Sair do Sistema</a>
-        </div>
-    </div>
+<body class="dashboard-layout">
 
-    <div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <h2>Kanban System</h2>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="{{ url_for('lista_projetos') }}" class="menu-item-home">📋 Visão Geral (Módulos)</a>
+            <hr>
+            <span class="menu-title">Meus Quadros:</span>
+            <ul class="sidebar-list">
+                {% for item in barra_lateral %}
+                    <li class="{% if item[0] == projeto[0] %}active-project{% endif %}">
+                        <a href="{{ url_for('dashboard_projeto', projeto_id=item[0]) }}">{{ item[1] }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="header-title">
+                <span class="context-indicator">Módulo Atual</span>
+                <h1>{{ projeto[1] }}</h1>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('nova_tarefa', projeto_id=projeto[0]) }}" class="btn-floating">+ Nova Tarefa</a>
+                <a href="{{ url_for('logout') }}" class="btn-logout-secondary">Sair</a>
+            </div>
+        </header>
+
         <div class="kanban-board">
+            
             <div class="kanban-column">
-                <h3>📌 A Fazer</h3>
-                {% for tarefa in tarefas if tarefa['status'] == 'A Fazer' %}
-                    <div class="task-card" data-priority="{{ tarefa['prioridade'] }}">
-                        <h4>{{ tarefa['titulo'] }}</h4>
-                        <p>{{ tarefa['descricao'] }}</p>
-                        <div class="task-meta">
-                            <span class="badge priority">{{ tarefa['prioridade'] }}</span>
-                            {% if tarefa['data_entrega'] %}<span class="badge date">📅 {{ tarefa['data_entrega'] }}</span>{% endif %}
+                <div class="column-header status-todo">A Fazer</div>
+                <div class="column-cards">
+                    {% for tarefa in tarefas if tarefa[3] == 'A Fazer' %}
+                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                            <div class="task-body">
+                                <h4>{{ tarefa[1] }}</h4>
+                                <p class="task-desc">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
+                            </div>
+                            <div class="task-meta">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
+                                {% if tarefa[5] %}
+                                    <span class="task-date">📅 {{ tarefa[5] }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="task-actions">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action move-forward">Iniciar →</a>
+                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" onclick="return confirm('Excluir esta tarefa?');">🗑️</a>
+                            </div>
                         </div>
-                        <div class="task-actions">
-                            <a href="/tarefa/status/{{ tarefa['id'] }}/Em Andamento" class="btn-move">⏩ Iniciar</a>
-                            <a href="/tarefa/editar/{{ tarefa['id'] }}" class="btn-edit">✏️</a>
-                            <a href="/tarefa/deletar/{{ tarefa['id'] }}" class="btn-delete" onclick="return confirm('Apagar tarefa?')">❌</a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="kanban-column">
-                <h3>⚡ Em Andamento</h3>
-                {% for tarefa in tarefas if tarefa['status'] == 'Em Andamento' %}
-                    <div class="task-card" data-priority="{{ tarefa['prioridade'] }}">
-                        <h4>{{ tarefa['titulo'] }}</h4>
-                        <p>{{ tarefa['descricao'] }}</p>
-                        <div class="task-meta">
-                            <span class="badge priority">{{ tarefa['prioridade'] }}</span>
-                            {% if tarefa['data_entrega'] %}<span class="badge date">📅 {{ tarefa['data_entrega'] }}</span>{% endif %}
+                <div class="column-header status-doing">Em Andamento</div>
+                <div class="column-cards">
+                    {% for tarefa in tarefas if tarefa[3] == 'Em Andamento' %}
+                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                            <div class="task-body">
+                                <h4>{{ tarefa[1] }}</h4>
+                                <p class="task-desc">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
+                            </div>
+                            <div class="task-meta">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
+                                {% if tarefa[5] %}
+                                    <span class="task-date">📅 {{ tarefa[5] }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="task-actions">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='A Fazer') }}" class="btn-task-action move-backward">← Voltar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Concluído') }}" class="btn-task-action move-forward">Concluir →</a>
+                            </div>
                         </div>
-                        <div class="task-actions">
-                            <a href="/tarefa/status/{{ tarefa['id'] }}/Concluído" class="btn-move">✅ Concluir</a>
-                            <a href="/tarefa/editar/{{ tarefa['id'] }}" class="btn-edit">✏️</a>
-                            <a href="/tarefa/deletar/{{ tarefa['id'] }}" class="btn-delete" onclick="return confirm('Apagar tarefa?')">❌</a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="kanban-column">
-                <h3>✔️ Concluído</h3>
-                {% for tarefa in tarefas if tarefa['status'] == 'Concluído' %}
-                    <div class="task-card completed" data-priority="{{ tarefa['prioridade'] }}">
-                        <h4>{{ tarefa['titulo'] }}</h4>
-                        <p>{{ tarefa['descricao'] }}</p>
-                        <div class="task-meta">
-                            <span class="badge priority">{{ tarefa['prioridade'] }}</span>
-                            {% if tarefa['data_entrega'] %}<span class="badge date">📅 {{ tarefa['data_entrega'] }}</span>{% endif %}
+                <div class="column-header status-done">Concluído</div>
+                <div class="column-cards">
+                    {% for tarefa in tarefas if tarefa[3] == 'Concluído' %}
+                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                            <div class="task-body">
+                                <h4>{{ tarefa[1] }}</h4>
+                                <p class="task-desc-done">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
+                            </div>
+                            <div class="task-meta">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
+                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" onclick="return confirm('Excluir esta tarefa permanentemente?');">🗑️ Remover</a>
+                            </div>
+                            <div class="task-actions">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action move-backward">← Reabrir</a>
+                            </div>
                         </div>
-                        <div class="task-actions">
-                            <a href="/tarefa/status/{{ tarefa['id'] }}/A Fazer" class="btn-move">⏪ Reiniciar</a>
-                            <a href="/tarefa/editar/{{ tarefa['id'] }}" class="btn-edit">✏️</a>
-                            <a href="/tarefa/deletar/{{ tarefa['id'] }}" class="btn-delete" onclick="return confirm('Apagar tarefa?')">❌</a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
+
         </div>
-    </div>
+    </main>
+
 </body>
 </html>
