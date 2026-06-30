@@ -19,10 +19,19 @@
                 {% if messages %}
                     <div class="flash-messages" style="margin-bottom: 15px;">
                         {% for category, message in messages %}
-                            <div class="message-item alert-{{ category }}" style="padding: 10px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; {% if category == 'danger' %} background-color: #f8d7da; color: #721c24; {% else %} background-color: #d4edda; color: #155724; {% endif %}">
-                                <span>{{ message }}</span>
-                                <strong style="cursor:pointer;" onclick="this.parentElement.style.display='none';">&times;</strong>
-                            </div>
+                            
+                            {% if category == 'danger' %}
+                                <div class="message-item alert-danger" style="padding: 10px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; background-color: #f8d7da; color: #721c24;">
+                                    <span>{{ message }}</span>
+                                    <strong style="cursor:pointer;" onclick="this.parentElement.style.display='none';">&times;</strong>
+                                </div>
+                            {% else %}
+                                <div class="message-item alert-success" style="padding: 10px; margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; background-color: #d4edda; color: #155724;">
+                                    <span>{{ message }}</span>
+                                    <strong style="cursor:pointer;" onclick="this.parentElement.style.display='none';">&times;</strong>
+                                </div>
+                            {% endif %}
+
                         {% endfor %}
                     </div>
                 {% endif %}

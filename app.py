@@ -112,6 +112,37 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+# --- RECUPERAÇÃO DE SENHA (FLUXO DIRETO INTEGRADO) ---
+@app.route('/recuperar', methods=['GET', 'POST'])
+def recuperar_senha():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        nova_senha = request.form.get('nova_senha')
+        
+        if not email or not nova_senha:
+            flash('Preencha todos os campos!', 'danger')
+            return redirect(url_for('recuperar_senha'))
+            
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT id FROM usuarios WHERE email = ?', (email,))
+        user = cursor.fetchone()
+        
+        if user:
+            # Gera o hash criptográfico seguro para a nova senha informada
+            nova_senha_hash = generate_password_hash(nova_senha)
+            cursor.execute('UPDATE usuarios SET senha = ? WHERE email = ?', (nova_senha_hash, email))
+            conn.commit()
+            conn.close()
+            flash('Senha redefinida com sucesso! Faça login com as novas credenciais.', 'success')
+            return redirect(url_for('login'))
+        else:
+            conn.close()
+            flash('E-mail não encontrado no sistema!', 'danger')
+            return redirect(url_for('recuperar_senha'))
+            
+    return render_template('recuperar_senha.html')
+
 # --- ROTAS DE PROJETOS / MÓDULOS ---
 
 @app.route('/projetos', methods=['GET', 'POST'])
@@ -176,7 +207,7 @@ def dashboard_projeto(projeto_id):
         conn.close()
         return "Acesso negado ou módulo não encontrado.", 403
         
-    cursor.execute('SELECT * FROM tarefas WHERE projeto_id = ? ORDER BY data_entrega ASC', (projeto_id,))
+    cursor.execute('SELECT * FROM tarefas WHERE project_id = ? ORDER BY data_entrega ASC' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'SELECT * FROM tarefas WHERE projeto_id = ? ORDER BY data_entrega ASC', (projeto_id,))
     tarefas = cursor.fetchall()
     
     cursor.execute('SELECT id, nome_projeto FROM projetos WHERE usuario_id = ?', (session['usuario_id'],))
@@ -206,8 +237,10 @@ def nova_tarefa(projeto_id):
         data_entrega = request.form.get('data_entrega')
         
         if titulo:
-            cursor.execute('''
-                INSERT INTO tarefas (titulo, descricao, status, prioridade, data_entrega, projeto_id)
+            # Detecta dinamicamente o nome da coluna de relacionamento para evitar quebras por variação de nomenclatura
+            col_id = 'project_id' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'projeto_id'
+            cursor.execute(f'''
+                INSERT INTO tarefas (titulo, descricao, status, prioridade, data_entrega, {col_id})
                 VALUES (?, ?, 'A Fazer', ?, ?, ?)
             ''', (titulo, descricao, prioridade, data_entrega, projeto_id))
             conn.commit()
@@ -225,9 +258,10 @@ def mover_tarefa(tarefa_id, novo_status):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT tarefas.projeto_id FROM tarefas 
-        JOIN projetos ON tarefas.projeto_id = projetos.id 
+    col_id = 'project_id' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'projeto_id'
+    cursor.execute(f'''
+        SELECT tarefas.{col_id} FROM tarefas 
+        JOIN projetos ON tarefas.{col_id} = projetos.id 
         WHERE tarefas.id = ? AND projetos.usuario_id = ?
     ''', (tarefa_id, session['usuario_id']))
     resultado = cursor.fetchone()
@@ -250,9 +284,10 @@ def excluir_tarefa(tarefa_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT tarefas.projeto_id FROM tarefas 
-        JOIN projetos ON tarefas.projeto_id = projetos.id 
+    col_id = 'project_id' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'projeto_id'
+    cursor.execute(f'''
+        SELECT tarefas.{col_id} FROM tarefas 
+        JOIN projetos ON tarefas.{col_id} = projetos.id 
         WHERE tarefas.id = ? AND projetos.usuario_id = ?
     ''', (tarefa_id, session['usuario_id']))
     resultado = cursor.fetchone()
@@ -267,7 +302,6 @@ def excluir_tarefa(tarefa_id):
     conn.close()
     return "Erro ao remover registro.", 403
 
-# --- ROTA PARA EDITAR TAREFAS ---
 @app.route('/tarefa/<int:tarefa_id>/editar', methods=['GET', 'POST'])
 def editar_tarefa(tarefa_id):
     if 'usuario_id' not in session:
@@ -276,10 +310,10 @@ def editar_tarefa(tarefa_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     
-    # Validação de segurança: garante que a tarefa pertence a um projeto do usuário atual
-    cursor.execute('''
+    col_id = 'project_id' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'projeto_id'
+    cursor.execute(f'''
         SELECT tarefas.* FROM tarefas 
-        JOIN projetos ON tarefas.projeto_id = projetos.id 
+        JOIN projetos ON tarefas.{col_id} = projetos.id 
         WHERE tarefas.id = ? AND projetos.usuario_id = ?
     ''', (tarefa_id, session['usuario_id']))
     tarefa = cursor.fetchone()
@@ -303,7 +337,7 @@ def editar_tarefa(tarefa_id):
             ''', (titulo, descricao, status, prioridade, data_entrega, tarefa_id))
             conn.commit()
             conn.close()
-            return redirect(url_for('dashboard_projeto', projeto_id=tarefa[6])) # Redireciona usando a FK projeto_id
+            return redirect(url_for('dashboard_projeto', projeto_id=tarefa[6]))
             
     conn.close()
     return render_template('editar.html', tarefa=tarefa)
