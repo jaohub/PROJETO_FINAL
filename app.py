@@ -129,7 +129,6 @@ def recuperar_senha():
         user = cursor.fetchone()
         
         if user:
-            # Gera o hash criptográfico seguro para a nova senha informada
             nova_senha_hash = generate_password_hash(nova_senha)
             cursor.execute('UPDATE usuarios SET senha = ? WHERE email = ?', (nova_senha_hash, email))
             conn.commit()
@@ -176,6 +175,37 @@ def lista_projetos():
         mostrar_criador_direto = True
 
     return render_template('projetos.html', projetos=meus_projetos, mostrar_criador=mostrar_criador_direto)
+
+@app.route('/projeto/<int:projeto_id>/editar', methods=['GET', 'POST'])
+def editar_projeto(projeto_id):
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+        
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM projetos WHERE id = ? AND usuario_id = ?', (projeto_id, session['usuario_id']))
+    projeto = cursor.fetchone()
+    
+    if not projeto:
+        conn.close()
+        return "Módulo não encontrado ou acesso não autorizado.", 403
+        
+    if request.method == 'POST':
+        nome = request.form.get('nome_projeto')
+        descricao = request.form.get('descricao')
+        
+        if nome:
+            cursor.execute('''
+                UPDATE projetos 
+                SET nome_projeto = ?, descricao = ?
+                WHERE id = ? AND usuario_id = ?
+            ''', (nome, descricao, projeto_id, session['usuario_id']))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('lista_projetos'))
+            
+    conn.close()
+    return render_template('editar_projeto.html', projeto=projeto)
 
 @app.route('/projeto/<int:projeto_id>/excluir', methods=['POST'])
 def excluir_projeto(projeto_id):
@@ -237,7 +267,6 @@ def nova_tarefa(projeto_id):
         data_entrega = request.form.get('data_entrega')
         
         if titulo:
-            # Detecta dinamicamente o nome da coluna de relacionamento para evitar quebras por variação de nomenclatura
             col_id = 'project_id' if 'project_id' in [d[0] for d in cursor.execute("PRAGMA table_info(tarefas)").fetchall()] else 'projeto_id'
             cursor.execute(f'''
                 INSERT INTO tarefas (titulo, descricao, status, prioridade, data_entrega, {col_id})
@@ -245,7 +274,7 @@ def nova_tarefa(projeto_id):
             ''', (titulo, descricao, prioridade, data_entrega, projeto_id))
             conn.commit()
             conn.close()
-            return redirect(url_for('dashboard_projeto', projeto_id=projeto_id))
+            return redirect(url_for('dashboard_projeto', project_id=projeto_id) if col_id == 'project_id' else url_for('dashboard_projeto', projeto_id=projeto_id))
             
     conn.close()
     return render_template('nova_tarefa.html', projeto=projeto)
@@ -271,7 +300,7 @@ def mover_tarefa(tarefa_id, novo_status):
         cursor.execute('UPDATE tarefas SET status = ? WHERE id = ?', (novo_status, tarefa_id))
         conn.commit()
         conn.close()
-        return redirect(url_for('dashboard_projeto', projeto_id=projeto_id))
+        return redirect(url_for('dashboard_projeto', project_id=projeto_id) if col_id == 'project_id' else url_for('dashboard_projeto', projeto_id=projeto_id))
         
     conn.close()
     return "Erro na alteração de estado.", 403
@@ -297,7 +326,7 @@ def excluir_tarefa(tarefa_id):
         cursor.execute('DELETE FROM tarefas WHERE id = ?', (tarefa_id,))
         conn.commit()
         conn.close()
-        return redirect(url_for('dashboard_projeto', projeto_id=projeto_id))
+        return redirect(url_for('dashboard_projeto', project_id=projeto_id) if col_id == 'project_id' else url_for('dashboard_projeto', projeto_id=projeto_id))
         
     conn.close()
     return "Erro ao remover registro.", 403
@@ -337,7 +366,7 @@ def editar_tarefa(tarefa_id):
             ''', (titulo, descricao, status, prioridade, data_entrega, tarefa_id))
             conn.commit()
             conn.close()
-            return redirect(url_for('dashboard_projeto', projeto_id=tarefa[6]))
+            return redirect(url_for('dashboard_projeto', project_id=tarefa[6]) if col_id == 'project_id' else url_for('dashboard_projeto', projeto_id=tarefa[6]))
             
     conn.close()
     return render_template('editar.html', tarefa=tarefa)

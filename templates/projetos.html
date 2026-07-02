@@ -20,10 +20,10 @@
         
         {% if mostrar_criador %}
             <div class="project-creation-box">
-                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">✨ Criar Novo Módulo</h3>
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">Criar Novo Módulo</h3>
                 <form action="{{ url_for('lista_projetos') }}" method="POST" class="inline-form">
                     <input type="text" name="nome_projeto" placeholder="Ex: Atividades de Casa, Faculdade, SENAI..." required autocomplete="off">
-                    <input type="text" name="descricao" placeholder="Descrição curta (opcional)" autocomplete="off">
+                    <input type="text" name="descricao" placeholder="Descrição corta (opcional)" autocomplete="off">
                     <button type="submit" class="btn-add">Criar Módulo</button>
                 </form>
                 
@@ -39,7 +39,7 @@
                     <p style="color: #7f8c8d; margin-top: 4px;">Selecione um módulo abaixo para gerenciar suas atividades:</p>
                 </div>
                 <a href="{{ url_for('lista_projetos', novo=1) }}" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    ➕ Adicionar Novo Módulo
+                     Adicionar Novo Módulo
                 </a>
             </div>
 
@@ -52,9 +52,11 @@
                             <p>{{ projeto[2] if projeto[2] else 'Sem descrição informada para este módulo.' }}</p>
                         </a>
                         
-                        <div class="project-card-actions">
+                        <div class="project-card-actions" style="display: flex; gap: 10px; align-items: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
+                            <a href="{{ url_for('editar_projeto', projeto_id=projeto[0]) }}" class="btn-edit-link" style="color: #3498db; text-decoration: none; font-size: 14px; font-weight: 500;">Editar Módulo</a>
+                            
                             <form action="{{ url_for('excluir_projeto', projeto_id=projeto[0]) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este módulo e todas as suas tarefas vinculadas?');" style="display: inline;">
-                                <button type="submit" class="btn-delete-link">Excluir Módulo</button>
+                                <button type="submit" class="btn-delete-link" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 14px; font-weight: 500; padding: 0;">Excluir Módulo</button>
                             </form>
                         </div>
                     </div>

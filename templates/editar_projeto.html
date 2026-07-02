@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Módulo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-logo">
+            <h1 style="color: #2c3e50; font-size: 22px;">⚡ Gerenciador de Atividades</h1>
+        </div>
+        <div class="header-user">
+            <a href="{{ url_for('lista_projetos') }}" class="btn-logout" style="background-color: #7f8c8d;">Voltar aos Módulos</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="project-creation-box" style="max-width: 500px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="font-size: 20px; margin-bottom: 20px; color: #2c3e50;"> Editar Módulo</h3>
+            
+            <form action="{{ url_for('editar_projeto', projeto_id=projeto[0]) }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #34495e; font-weight: 500;">Nome do Módulo</label>
+                    <input type="text" name="nome_projeto" value="{{ projeto[1] }}" required autocomplete="off" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px; color: #34495e; font-weight: 500;">Descrição</label>
+                    <input type="text" name="descricao" value="{{ projeto[2] if projeto[2] else '' }}" autocomplete="off" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="submit" class="btn-add" style="flex: 1;">Salvar Alterações</button>
+                    <a href="{{ url_for('lista_projetos') }}" style="flex: 1; text-align: center; background: #e74c3c; color: white; text-decoration: none; padding: 10px; border-radius: 4px; line-height: 22px;">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

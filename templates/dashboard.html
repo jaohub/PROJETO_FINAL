@@ -12,7 +12,7 @@
             <h2>Kanban System</h2>
         </div>
         <nav class="sidebar-menu">
-            <a href="{{ url_for('lista_projetos') }}" class="menu-item-home">📋 Visão Geral (Módulos)</a>
+            <a href="{{ url_for('lista_projetos') }}" class="menu-item-home">Visão Geral (Módulos)</a>
             <hr>
             <span class="menu-title">Meus Quadros:</span>
             <ul class="sidebar-list">
@@ -55,7 +55,7 @@
                                 {% endif %}
                             </div>
                             <div class="task-actions">
-                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">Editar</a>
                                 <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action move-forward">Iniciar →</a>
                                 <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" onclick="return confirm('Excluir esta tarefa?');">🗑️</a>
                             </div>
@@ -80,7 +80,7 @@
                                 {% endif %}
                             </div>
                             <div class="task-actions">
-                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">Editar</a>
                                 <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='A Fazer') }}" class="btn-task-action move-backward">← Voltar</a>
                                 <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Concluído') }}" class="btn-task-action move-forward">Concluir →</a>
                             </div>
