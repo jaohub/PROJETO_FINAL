@@ -4,6 +4,116 @@
     <meta charset="UTF-8">
     <title>Painel Kanban — {{ projeto[1] }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Ajusta o fundo geral do corpo do painel sem quebrar o grid/flexbox */
+        body.dashboard-layout, html {
+            background: linear-gradient(135deg, #182848, #4b6cb7) !important;
+            min-height: 100vh;
+        }
+
+        /* Mantém a área de conteúdo com fundo transparente para mostrar o gradiente do body */
+        .main-content {
+            background: transparent !important;
+        }
+
+        /* Barra de navegação lateral em estilo vidro escuro */
+        .sidebar {
+            background: rgba(17, 27, 51, 0.75) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-brand h2, .menu-title, .sidebar-list a {
+            color: #ffffff !important;
+        }
+
+        /* Ajustando legibilidade do cabeçalho */
+        .dashboard-header .header-title h1 {
+            color: #ffffff !important;
+        }
+        .dashboard-header .header-title .context-indicator {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Colunas do Kanban sem o fundo cinza/branco original */
+        .kanban-column {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Estilo de Vidro Fosco nos Cards das Tarefas */
+        .task-card {
+            background: rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #ffffff !important;
+        }
+
+        .task-card h4, .task-desc, .task-desc-done {
+            color: #ffffff !important;
+        }
+
+        /* ========================================================
+           RESET COMPLETO DA ÁREA DO TEXTO DA PRIORIDADE (FUNDO BRANCO REMOVIDO)
+           ======================================================== */
+        .task-meta, .task-meta * {
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+
+        /* Nova badge estilizada e flutuante */
+        .badge-priority {
+            padding: 4px 10px !important;
+            border-radius: 20px !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            display: inline-block !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+        }
+
+        /* Urgência Alta (Neon Vermelho) */
+        .priority-alta, .priority-alta-urgencia, .priority-urgente {
+            background: rgba(217, 83, 79, 0.35) !important;
+            background-color: rgba(217, 83, 79, 0.35) !important;
+            color: #ff6b6b !important;
+            border: 1px solid rgba(217, 83, 79, 0.6) !important;
+        }
+
+        /* Urgência Média (Neon Laranja) */
+        .priority-media, .priority-moderada {
+            background: rgba(240, 173, 78, 0.35) !important;
+            background-color: rgba(240, 173, 78, 0.35) !important;
+            color: #f0ad4e !important;
+            border: 1px solid rgba(240, 173, 78, 0.6) !important;
+        }
+
+        /* Urgência Baixa (Neon Verde) */
+        .priority-baixa, .priority-normal {
+            background: rgba(92, 184, 92, 0.35) !important;
+            background-color: rgba(92, 184, 92, 0.35) !important;
+            color: #5cb85c !important;
+            border: 1px solid rgba(92, 184, 92, 0.6) !important;
+        }
+
+        /* Botões de Ação do Kanban internos do card */
+        .btn-task-action {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-task-action:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+    </style>
 </head>
 <body class="dashboard-layout">
 
@@ -13,7 +123,7 @@
         </div>
         <nav class="sidebar-menu">
             <a href="{{ url_for('lista_projetos') }}" class="menu-item-home">📋 Visão Geral (Módulos)</a>
-            <hr>
+            <hr style="border-color: rgba(255,255,255,0.1);">
             <span class="menu-title">Meus Quadros:</span>
             <ul class="sidebar-list">
                 {% for item in barra_lateral %}
@@ -26,14 +136,14 @@
     </aside>
 
     <main class="main-content">
-        <header class="dashboard-header">
+        <header class="dashboard-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; margin-bottom: 20px;">
             <div class="header-title">
                 <span class="context-indicator">Módulo Atual</span>
                 <h1>{{ projeto[1] }}</h1>
             </div>
             <div class="header-actions">
-                <a href="{{ url_for('nova_tarefa', projeto_id=projeto[0]) }}" class="btn-floating">+ Nova Tarefa</a>
-                <a href="{{ url_for('logout') }}" class="btn-logout-secondary">Sair</a>
+                <a href="{{ url_for('nova_tarefa', projeto_id=projeto[0]) }}" class="btn-floating" style="background-color: #111b33 !important; color: white !important; padding: 10px 15px; border-radius: 4px; text-decoration: none; font-weight: bold; border: 1px solid rgba(255,255,255,0.2);">+ NOVA TAREFA</a>
+                <a href="{{ url_for('logout') }}" class="btn-logout-secondary" style="background-color: rgba(217, 83, 79, 0.8) !important; color: white !important; padding: 10px 15px; border-radius: 4px; text-decoration: none;">SAIR</a>
             </div>
         </header>
 
@@ -43,21 +153,21 @@
                 <div class="column-header status-todo">A Fazer</div>
                 <div class="column-cards">
                     {% for tarefa in tarefas if tarefa[3] == 'A Fazer' %}
-                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                        <div class="task-card" style="padding: 15px; margin-bottom: 15px; border-radius: 8px;">
                             <div class="task-body">
                                 <h4>{{ tarefa[1] }}</h4>
                                 <p class="task-desc">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
                             </div>
-                            <div class="task-meta">
-                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
+                            <div class="task-meta" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower|replace(' ', '-') }}">{{ tarefa[4] }}</span>
                                 {% if tarefa[5] %}
-                                    <span class="task-date">📅 {{ tarefa[5] }}</span>
+                                    <span class="task-date" style="color: rgba(255, 255, 255, 0.6) !important; font-size: 12px;">📅 {{ tarefa[5] }}</span>
                                 {% endif %}
                             </div>
-                            <div class="task-actions">
-                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
-                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action move-forward">Iniciar →</a>
-                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" onclick="return confirm('Excluir esta tarefa?');">🗑️</a>
+                            <div class="task-actions" style="display: flex; gap: 5px; align-items: center;">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" style="color: #3498db; margin-right: auto; text-decoration: none; font-size: 12px; font-weight: bold;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action" style="border-radius: 4px; padding: 5px 10px; text-decoration: none; font-size: 12px;">Iniciar →</a>
+                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete-icon" style="text-decoration: none; font-size: 14px; padding: 2px 6px; border-radius: 4px;" onclick="return confirm('Excluir esta tarefa?');">🗑️</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -68,21 +178,21 @@
                 <div class="column-header status-doing">Em Andamento</div>
                 <div class="column-cards">
                     {% for tarefa in tarefas if tarefa[3] == 'Em Andamento' %}
-                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                        <div class="task-card" style="padding: 15px; margin-bottom: 15px; border-radius: 8px;">
                             <div class="task-body">
                                 <h4>{{ tarefa[1] }}</h4>
                                 <p class="task-desc">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
                             </div>
-                            <div class="task-meta">
-                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
+                            <div class="task-meta" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower|replace(' ', '-') }}">{{ tarefa[4] }}</span>
                                 {% if tarefa[5] %}
-                                    <span class="task-date">📅 {{ tarefa[5] }}</span>
+                                    <span class="task-date" style="color: rgba(255, 255, 255, 0.6) !important; font-size: 12px;">📅 {{ tarefa[5] }}</span>
                                 {% endif %}
                             </div>
-                            <div class="task-actions">
-                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
-                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='A Fazer') }}" class="btn-task-action move-backward">← Voltar</a>
-                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Concluído') }}" class="btn-task-action move-forward">Concluir →</a>
+                            <div class="task-actions" style="display: flex; gap: 5px; align-items: center;">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" style="color: #3498db; margin-right: auto; text-decoration: none; font-size: 12px; font-weight: bold;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='A Fazer') }}" class="btn-task-action" style="border-radius: 4px; padding: 5px 10px; text-decoration: none; font-size: 12px;">← Voltar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Concluído') }}" class="btn-task-action" style="border-radius: 4px; padding: 5px 10px; text-decoration: none; font-size: 12px;">Concluir →</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -93,18 +203,18 @@
                 <div class="column-header status-done">Concluído</div>
                 <div class="column-cards">
                     {% for tarefa in tarefas if tarefa[3] == 'Concluído' %}
-                        <div class="task-card border-{{ tarefa[4]|lower }}">
+                        <div class="task-card" style="padding: 15px; margin-bottom: 15px; border-radius: 8px;">
                             <div class="task-body">
                                 <h4>{{ tarefa[1] }}</h4>
                                 <p class="task-desc-done">{{ tarefa[2] if tarefa[2] else 'Sem descrição.' }}</p>
                             </div>
-                            <div class="task-meta">
-                                <span class="badge-priority priority-{{ tarefa[4]|lower }}">{{ tarefa[4] }}</span>
-                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" onclick="return confirm('Excluir esta tarefa permanentemente?');">🗑️ Remover</a>
+                            <div class="task-meta" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                <span class="badge-priority priority-{{ tarefa[4]|lower|replace(' ', '-') }}">{{ tarefa[4] }}</span>
+                                <a href="{{ url_for('excluir_tarefa', tarefa_id=tarefa[0]) }}" onclick="return confirm('Excluir esta tarefa permanentemente?');" style="color: #ff4d4d; text-decoration: none; font-size: 12px; margin-left: auto; font-weight: bold;">🗑️ Remover</a>
                             </div>
-                            <div class="task-actions">
-                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" class="btn-task-delete" style="color: #3498db; margin-right: auto;">✏️ Editar</a>
-                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action move-backward">← Reabrir</a>
+                            <div class="task-actions" style="display: flex; gap: 5px; align-items: center;">
+                                <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa[0]) }}" style="color: #3498db; margin-right: auto; text-decoration: none; font-size: 12px; font-weight: bold;">✏️ Editar</a>
+                                <a href="{{ url_for('mover_tarefa', tarefa_id=tarefa[0], novo_status='Em Andamento') }}" class="btn-task-action" style="border-radius: 4px; padding: 5px 10px; text-decoration: none; font-size: 12px;">← Reabrir</a>
                             </div>
                         </div>
                     {% endfor %}

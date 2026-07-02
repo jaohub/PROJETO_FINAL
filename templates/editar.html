@@ -4,6 +4,145 @@
     <meta charset="UTF-8">
     <title>Editar Atividade</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Fundo unificado com o gradiente fluido do sistema */
+        body.form-page-body {
+            background: linear-gradient(135deg, #182848, #4b6cb7) !important;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Card Transparente / Efeito Vidro Fosco */
+        .form-card {
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        /* Cabeçalho do formulário */
+        .form-card-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-card-header h2 {
+            color: #ffffff !important;
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Estrutura de campos */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .flex-1 {
+            flex: 1;
+        }
+
+        .form-group label {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Customização dos Inputs, Selects e Textarea */
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Ajuste de altura padrão para selects */
+        .form-group select {
+            height: 43px;
+        }
+
+        /* Ações finais do formulário */
+        .form-actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+        }
+
+        /* Botão Azul de Confirmação */
+        .btn-submit-task {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db !important;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit-task:hover {
+            background-color: #2980b9 !important;
+        }
+
+        /* Link de Voltar/Cancelar */
+        .btn-cancel-task {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .btn-cancel-task:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="form-page-body">
 
@@ -23,9 +162,9 @@
                     <div class="form-group flex-1">
                         <label for="status">Status / Coluna:</label>
                         <select name="status" id="status">
-                            <option value="A Fazer" {% if tarefa[3] == 'A Fazer' %}selected{% endif %}>A Fazer</option>
-                            <option value="Em Andamento" {% if tarefa[3] == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
-                            <option value="Concluído" {% if tarefa[3] == 'Concluído' %}selected{% endif %}>Concluído</option>
+                            <option value="A Fazer" {% if tarefa[3] == 'A Fazer' %}selected{% endif %}>A FAZER</option>
+                            <option value="Em Andamento" {% if tarefa[3] == 'Em Andamento' %}selected{% endif %}>EM ANDAMENTO</option>
+                            <option value="Concluído" {% if tarefa[3] == 'Concluído' %}selected{% endif %}>CONCLUÍDO</option>
                         </select>
                     </div>
 
@@ -50,7 +189,7 @@
                 </div>
                 
                 <div class="form-actions">
-                    <button type="submit" class="btn-submit-task" style="background-color: #3498db;">Salvar Alterações</button>
+                    <button type="submit" class="btn-submit-task">Salvar Alterações</button>
                     <a href="{{ url_for('dashboard_projeto', projeto_id=tarefa[6]) }}" class="btn-cancel-task">← Cancelar e Voltar</a>
                 </div>
             </form>
