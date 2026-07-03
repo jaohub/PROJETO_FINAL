@@ -114,6 +114,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s;
+            text-decoration: none;
         }
 
         .btn-add:hover {
@@ -151,6 +152,13 @@
             background: rgba(255, 255, 255, 0.22) !important;
         }
 
+        .project-card-content {
+            text-decoration: none;
+            color: #ffffff;
+            display: block;
+            flex-grow: 1;
+        }
+
         .project-card h3 {
             margin: 0 0 10px 0;
             color: #ffffff;
@@ -161,7 +169,29 @@
             color: rgba(255, 255, 255, 0.75);
             font-size: 14px;
             margin: 0 0 20px 0;
-            flex-grow: 1;
+        }
+
+        .project-card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 5;
+        }
+
+        .btn-edit-project {
+            color: rgba(52, 152, 219, 0.9);
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .btn-edit-project:hover {
+            color: #54b4eb;
+            text-decoration: underline;
         }
 
         .btn-delete-project {
@@ -170,7 +200,9 @@
             text-decoration: none;
             transition: color 0.2s;
             cursor: pointer;
-            z-index: 2;
+            background: none;
+            border: none;
+            padding: 0;
         }
 
         .btn-delete-project:hover {
@@ -200,22 +232,21 @@
         {# Caixa de Criação de Projetos/Módulos #}
         {% if mostrar_criador %}
             <div class="project-creation-box">
-                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">✨ Criar Novo Módulo</h3>
+                <h3 style="font-size: 18px; margin-bottom: 15px;">Criar Novo Módulo</h3>
                 <form action="{{ url_for('lista_projetos') }}" method="POST" class="inline-form">
                     <input type="text" name="nome_projeto" placeholder="Ex: Atividades de Casa, Faculdade, SENAI..." required autocomplete="off">
                     <input type="text" name="descricao" placeholder="Descrição curta (opcional)" autocomplete="off">
                     <button type="submit" class="btn-add">Criar Módulo</button>
                 </form>
+                {% if projetos %}
+                    <a href="{{ url_for('lista_projetos') }}" style="display: inline-block; margin-top: 15px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px;">← Voltar para Meus Módulos</a>
+                {% endif %}
             </div>
         {% else %}
             
             <div class="welcome-section" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                <div>
-                    <h2>Olá, {{ session['usuario_nome'] }}!</h2>
-                    <p style="color: #7f8c8d; margin-top: 4px;">Selecione um módulo abaixo para gerenciar suas atividades:</p>
-                </div>
-                <a href="{{ url_for('lista_projetos', novo=1) }}" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                    ➕ Adicionar Novo Módulo
+                <a href="{{ url_for('lista_projetos', novo=1) }}" class="btn-add" style="display: inline-flex; align-items: center; gap: 8px;">
+                    Adicionar Novo Módulo
                 </a>
             </div>
 
@@ -229,16 +260,18 @@
                         </a>
                         
                         <div class="project-card-actions">
+                            <a href="{{ url_for('editar_projeto', projeto_id=projeto[0]) }}" class="btn-edit-project">✏️ Editar</a>
+                            
                             <form action="{{ url_for('excluir_projeto', projeto_id=projeto[0]) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este módulo e todas as suas tarefas vinculadas?');" style="display: inline;">
-                                <button type="submit" class="btn-delete-link">Excluir Módulo</button>
+                                <button type="submit" class="btn-delete-project">🗑️ Excluir Módulo</button>
                             </form>
                         </div>
                     </div>
+                {% else %}
+                    <p style="color: rgba(255,255,255,0.5); grid-column: 1 / -1;">Nenhum módulo encontrado. Crie um acima!</p>
                 {% endfor %}
-            {% else %}
-                <p style="color: rgba(255,255,255,0.5);">Nenhum módulo encontrado. Crie um acima!</p>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
 
     </main>
 
