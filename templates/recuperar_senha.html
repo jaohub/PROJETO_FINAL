@@ -5,13 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Tarefas - Recuperar Senha</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Fundo da página com o gradiente azul */
+        body.auth-wrapper {
+            background: linear-gradient(135deg, #182848, #4b6cb7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        /* Card Transparente (Glassmorphism) */
+        .auth-card {
+            background: rgba(255, 255, 255, 0.15); /* Transparência branca */
+            backdrop-filter: blur(10px); /* Vidro fosco */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* Títulos */
+        .auth-card h2 {
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-card p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        /* Grupos do formulário */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Inputs em branco semi-opaco */
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            color: #333333;
+            box-sizing: border-box;
+            transition: background 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Botão principal escuro e destacado */
+        .btn-auth-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #111b33; /* Azul bem escuro da imagem */
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-auth-submit:hover {
+            background-color: #1a294d;
+        }
+
+        /* Link do rodapé */
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 12px;
+        }
+
+        .auth-footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body class="form-page-body">
+<body class="auth-wrapper">
 
     <div class="form-container" style="max-width: 450px;">
         <div class="form-card">
             <div class="form-card-header">
-                <h2>Recuperar Senha</h2>
+                <h2>🔒 Recuperar Senha</h2>
                 <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Informe seu e-mail cadastrado e digite a nova senha do sistema.</p>
             </div>
             
@@ -37,23 +153,23 @@
                 {% endif %}
             {% endwith %}
 
-            <form action="{{ url_for('recuperar_senha') }}" method="POST" class="task-form">
-                <div class="form-group">
-                    <label for="rec_email">Seu E-mail Cadastrado:</label>
-                    <input type="email" id="rec_email" name="email" placeholder="seuemail@link.com" required autocomplete="off">
-                </div>
+        <form action="{{ url_for('recuperar_senha') }}" method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="rec_email">SEU E-MAIL CADASTRADO:</label>
+                <input type="email" id="rec_email" name="email" placeholder="seuemail@link.com" required autocomplete="off">
+            </div>
 
-                <div class="form-group" style="margin-top: 15px;">
-                    <label for="rec_senha">Nova Senha de Acesso:</label>
-                    <input type="password" id="rec_senha" name="nova_senha" placeholder="No mínimo 6 caracteres" minlength="6" required>
-                </div>
+            <div class="form-group">
+                <label for="rec_senha">NOVA SENHA DE ACESSO:</label>
+                <input type="password" id="rec_senha" name="nova_senha" placeholder="No mínimo 6 caracteres" minlength="6" required>
+            </div>
 
-                <div class="form-actions" style="margin-top: 25px;">
-                    <button type="submit" class="btn-submit-task" style="background-color: #e0a800; color: #212529;">Redefinir Senha</button>
-                    <a href="{{ url_for('login') }}" class="btn-cancel-task">← Voltar para o Login</a>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="btn-auth-submit">REDEFINIR SENHA</button>
+            
+            <div class="auth-footer">
+                <a href="{{ url_for('login') }}">← VOLTAR PARA O LOGIN</a>
+            </div>
+        </form>
     </div>
 
 </body>

@@ -4,32 +4,208 @@
     <meta charset="UTF-8">
     <title>Meus Módulos de Trabalho</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Fundo degradê escuro unificado */
+        body {
+            background: linear-gradient(135deg, #182848, #4b6cb7) !important;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+        }
+
+        /* Cabeçalho da página */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(17, 27, 51, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            color: #ffffff !important;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .btn-logout {
+            background-color: rgba(217, 83, 79, 0.85);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover {
+            background-color: rgba(217, 83, 79, 1);
+        }
+
+        /* Container principal */
+        .container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-text h2 {
+            margin: 0 0 5px 0;
+            font-size: 28px;
+        }
+        
+        .welcome-text p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 30px 0;
+        }
+
+        /* Caixa de Criação de Novo Módulo (Glassmorphism) */
+        .project-creation-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .project-creation-box h3 {
+            color: #ffffff !important;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        /* Formulário em linha */
+        .inline-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .inline-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .inline-form input:focus {
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-add {
+            padding: 12px 24px;
+            background-color: #2ca35c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #217d46;
+        }
+
+        /* Grid de Cards de Módulos */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* Cards transparentes no estilo da inspiração */
+        .project-card {
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+            transition: transform 0.2s, background 0.2s;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .project-card h3 {
+            margin: 0 0 10px 0;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .project-card p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+            margin: 0 0 20px 0;
+            flex-grow: 1;
+        }
+
+        .btn-delete-project {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .btn-delete-project:hover {
+            color: #ff4d4d;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="main-header">
+    <header>
         <div class="header-logo">
-            <h1 style="color: #2c3e50; font-size: 22px;">⚡ Gerenciador de Atividades</h1>
+            <h1>⚡ Gerenciador de Atividades</h1>
         </div>
         <div class="header-user">
-            <a href="{{ url_for('logout') }}" class="btn-logout">Sair do Sistema</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">SAIR DO SISTEMA</a>
         </div>
     </header>
 
     <main class="container">
         
+        <div class="welcome-text">
+            <h2>Olá, {{ session.get('usuario_nome', 'Usuário') }}!</h2>
+            <p>Selecione um módulo abaixo para gerenciar suas atividades.</p>
+        </div>
+
+        {# Caixa de Criação de Projetos/Módulos #}
         {% if mostrar_criador %}
             <div class="project-creation-box">
-                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">Criar Novo Módulo</h3>
+                <h3 style="font-size: 18px; margin-bottom: 15px; color: #2c3e50;">✨ Criar Novo Módulo</h3>
                 <form action="{{ url_for('lista_projetos') }}" method="POST" class="inline-form">
                     <input type="text" name="nome_projeto" placeholder="Ex: Atividades de Casa, Faculdade, SENAI..." required autocomplete="off">
-                    <input type="text" name="descricao" placeholder="Descrição corta (opcional)" autocomplete="off">
+                    <input type="text" name="descricao" placeholder="Descrição curta (opcional)" autocomplete="off">
                     <button type="submit" class="btn-add">Criar Módulo</button>
                 </form>
-                
-                {% if projetos %}
-                    <a href="{{ url_for('lista_projetos') }}" style="display: inline-block; margin-top: 15px; color: #7f8c8d; text-decoration: none; font-size: 14px;">← Voltar para Meus Módulos</a>
-                {% endif %}
             </div>
         {% else %}
             
@@ -39,7 +215,7 @@
                     <p style="color: #7f8c8d; margin-top: 4px;">Selecione um módulo abaixo para gerenciar suas atividades:</p>
                 </div>
                 <a href="{{ url_for('lista_projetos', novo=1) }}" class="btn-add" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                     Adicionar Novo Módulo
+                    ➕ Adicionar Novo Módulo
                 </a>
             </div>
 
@@ -52,17 +228,17 @@
                             <p>{{ projeto[2] if projeto[2] else 'Sem descrição informada para este módulo.' }}</p>
                         </a>
                         
-                        <div class="project-card-actions" style="display: flex; gap: 10px; align-items: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
-                            <a href="{{ url_for('editar_projeto', projeto_id=projeto[0]) }}" class="btn-edit-link" style="color: #3498db; text-decoration: none; font-size: 14px; font-weight: 500;">Editar Módulo</a>
-                            
+                        <div class="project-card-actions">
                             <form action="{{ url_for('excluir_projeto', projeto_id=projeto[0]) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este módulo e todas as suas tarefas vinculadas?');" style="display: inline;">
-                                <button type="submit" class="btn-delete-link" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 14px; font-weight: 500; padding: 0;">Excluir Módulo</button>
+                                <button type="submit" class="btn-delete-link">Excluir Módulo</button>
                             </form>
                         </div>
                     </div>
                 {% endfor %}
-            </div>
-        {% endif %}
+            {% else %}
+                <p style="color: rgba(255,255,255,0.5);">Nenhum módulo encontrado. Crie um acima!</p>
+            {% endif %}
+        </div>
 
     </main>
 
